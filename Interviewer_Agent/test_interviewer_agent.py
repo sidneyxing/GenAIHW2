@@ -1,10 +1,11 @@
-import os
 import json
 from interviewer_agent import generate_interview_questions, evaluate_interview_answer
 
 
 # Replace this with your real API key or set it in environment variable.
-os.environ["OPENAI_API_KEY"] = "API_KEY"
+# Ensure MIMO_API_KEY is configured before running tests.
+# Example:
+# export MIMO_API_KEY=your_key
 
 resume_summary = "Computer science student with experience in Python, SQL, and machine learning projects."
 skills = ["Python", "SQL", "Machine Learning"]
