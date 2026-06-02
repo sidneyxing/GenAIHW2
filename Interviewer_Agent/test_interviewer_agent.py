@@ -2,8 +2,7 @@ import json
 from interviewer_agent import generate_interview_questions, evaluate_interview_answer
 
 
-# Replace this with your real API key or set it in environment variable.
-# Ensure MIMO_API_KEY is configured before running tests.
+# Set MIMO_API_KEY in your environment before running this test.
 # Example:
 # export MIMO_API_KEY=your_key
 
