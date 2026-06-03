@@ -26,8 +26,8 @@ def generate_job_keywords(
 """
 
     ai_response = call_mimo(
-        system_prompt,
-        user_prompt
+        system_prompt=system_prompt,
+        user_content=user_prompt
     )
 
     if ai_response:

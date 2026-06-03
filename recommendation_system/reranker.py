@@ -174,7 +174,7 @@ Schema：
 
     raw_response = call_mimo(
         system_prompt=system_prompt,
-        user_prompt=user_prompt
+        user_content=user_prompt
     )
 
     result = parse_evaluations(
