@@ -195,7 +195,13 @@ Evaluation rules:
 - Explain 'strengths' and 'weaknesses' clearly using bullet points.
 - 'better_answer' MUST follow the STAR method (Situation, Task, Action, Result) if it's a behavioral/experience question, or be technically highly accurate if it's a tech question.
 - 'follow_up_question' must be designed to probe deeper into the weaknesses of their current answer.
-- Return valid JSON only. Do not include markdown or conversational text.
+
+Language Constraint:
+- The keys in the JSON must remain in English.
+- ALL the string values (feedback, strengths, weaknesses, better_answer, follow_up_question) MUST be written entirely in Traditional Chinese (繁體中文).
+- Technical terms (e.g., Python, Docker, API) can be kept in English.
+
+Return valid JSON only. Do not include markdown or conversational text.
 
 JSON schema:
 {
@@ -337,6 +343,12 @@ Your tasks:
 3. 'weak_areas': Extract the top 3 consistent areas needing improvement.
 
 Tone: Professional, decisive, and objective.
+
+Language Constraint:
+- The keys in the JSON must remain in English.
+- ALL the string values (summary, strong_areas, weak_areas) MUST be written entirely in Traditional Chinese (繁體中文).
+- Technical terms can remain in English.
+
 Return valid JSON only. Do not include markdown.
 
 JSON schema:

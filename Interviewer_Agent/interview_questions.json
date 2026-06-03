@@ -3,37 +3,39 @@
   "error": null,
   "data": {
     "job_title": "Python Backend Engineer",
-    "job_field": "Software Engineering - Backend Development",
+    "job_field": "Backend Engineering",
     "candidate_level": "Advanced",
     "interview_focus": [
-      "Python Backend Development",
-      "System Design and Scalability"
+      "Python Development",
+      "System Architecture",
+      "Cloud Services",
+      "Team Collaboration"
     ],
     "questions": [
       {
         "type": "technical",
         "difficulty": "advanced",
-        "question": "How would you design a scalable REST API using FastAPI for handling real-time analytics, considering aspects like rate limiting, database optimization, and integration with cloud services such as AWS or GCP?"
+        "question": "How would you design a high-performance REST API using FastAPI to handle concurrent requests, and what strategies would you employ for database optimization and caching?"
       },
       {
         "type": "project_experience",
-        "difficulty": "intermediate",
-        "question": "Can you describe the process you led in migrating from a monolithic RPC architecture to an event-driven system with Kafka and Kubernetes at Acme Corp? What were the key challenges, and how did you ensure a smooth transition with minimal downtime?"
+        "difficulty": "advanced",
+        "question": "Can you walk me through your experience architected and scaled Go-based microservices at Acme Corp, focusing on how you achieved over 2 million daily requests and reduced latency?"
       },
       {
         "type": "problem_solving",
         "difficulty": "advanced",
-        "question": "Imagine you need to integrate a third-party payment gateway into our Python backend system, ensuring secure transactions and handling failures gracefully. Walk me through the steps you would take, including error handling, logging, and compliance with security standards."
+        "question": "If you encountered a sudden spike in traffic to a Python backend service, what diagnostic tools and scaling techniques would you use to maintain performance and availability?"
       },
       {
         "type": "behavioral",
-        "difficulty": "intermediate",
-        "question": "The job description emphasizes teamwork and communication in a collaborative environment. Can you share an example where you had to work with cross-functional teams, such as designers or product managers, to resolve a technical conflict or deliver a project successfully?"
+        "difficulty": "advanced",
+        "question": "Describe a situation where you had to lead a technical migration or refactor with multiple stakeholders. How did you manage differing priorities and ensure successful delivery?"
       },
       {
         "type": "follow_up",
         "difficulty": "advanced",
-        "question": "Given your experience in open-source tools like Docker and Python frameworks, how would you approach containerizing a Flask application for deployment on AWS with high availability, considering aspects like CI/CD pipelines and monitoring?"
+        "question": "Given your expertise in containerization and cloud services, how would you integrate Kafka with Kubernetes for event-driven microservices on AWS, and what monitoring would you implement?"
       }
     ]
   }
