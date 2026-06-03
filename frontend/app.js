@@ -532,48 +532,60 @@ if (CONFIG.USE_API && targetStep > 1 && getJobs().length === 0 && targetStep !==
   }
 
   function markdownToHtml(markdown) {
-    const lines = String(markdown || '').replace(/\r/g, '').split('\n');
-    const out = [];
-    let inList = false;
-    let titleConsumed = false;
+  const lines = String(markdown || '').replace(/\r/g, '').split('\n');
+  const out = [];
+  let inList = false;
+  let titleConsumed = false;
 
-    function closeList() {
-      if (inList) {
-        out.push('</ul>');
-        inList = false;
-      }
+  function closeList() {
+    if (inList) {
+      out.push('</ul>');
+      inList = false;
     }
-
-    for (const rawLine of lines) {
-      const line = rawLine.trim();
-      if (!line) {
-        closeList();
-        continue;
-      }
-      if (line.startsWith('## ')) {
-        closeList();
-        out.push(`<h2>${inlineMd(line.slice(3))}</h2>`);
-      } else if (line.startsWith('# ')) {
-        closeList();
-        out.push(`<h1>${inlineMd(line.slice(2))}</h1>`);
-      } else if (line.startsWith('* ') || line.startsWith('- ')) {
-        if (!inList) {
-          out.push('<ul>');
-          inList = true;
-        }
-        out.push(`<li>${inlineMd(line.slice(2))}</li>`);
-      } else if (!titleConsumed && !line.includes('|') && line.length < 80) {
-        closeList();
-        out.push(`<h1>${inlineMd(line)}</h1>`);
-        titleConsumed = true;
-      } else {
-        closeList();
-        out.push(`<p>${inlineMd(line)}</p>`);
-      }
-    }
-    closeList();
-    return out.join('\n');
   }
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+
+    if (!line) {
+      closeList();
+      continue;
+    }
+
+    // Hide markdown horizontal rules like --- or ***
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(line)) {
+      closeList();
+      continue;
+    }
+
+    if (line.startsWith('### ')) {
+      closeList();
+      out.push(`<h3>${inlineMd(line.slice(4))}</h3>`);
+    } else if (line.startsWith('## ')) {
+      closeList();
+      out.push(`<h2>${inlineMd(line.slice(3))}</h2>`);
+    } else if (line.startsWith('# ')) {
+      closeList();
+      out.push(`<h1>${inlineMd(line.slice(2))}</h1>`);
+    } else if (line.startsWith('* ') || line.startsWith('- ')) {
+      if (!inList) {
+        out.push('<ul>');
+        inList = true;
+      }
+      out.push(`<li>${inlineMd(line.slice(2))}</li>`);
+    } else if (!titleConsumed && !line.includes('|') && line.length < 80) {
+      closeList();
+      out.push(`<h1>${inlineMd(line)}</h1>`);
+      titleConsumed = true;
+    } else {
+      closeList();
+      out.push(`<p>${inlineMd(line)}</p>`);
+    }
+  }
+
+  closeList();
+  return out.join('\n');
+}
 
   function inlineMd(value) {
     return escapeHtml(value)
