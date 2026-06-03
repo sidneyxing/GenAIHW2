@@ -2,7 +2,7 @@ import json
 import re
 from typing import Any, Dict, List, Optional
 
-from mimo_client import call_mimo
+from Interviewer_Agent.mimo_client import call_mimo
 
 
 def extract_json(raw_response: str) -> Dict[str, Any]:
