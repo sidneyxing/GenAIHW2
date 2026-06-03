@@ -9,7 +9,7 @@ from pathlib import Path
 from mimo_client import call_mimo
 
 INPUT_FILE = Path("inputs/publications.txt")
-OUTPUT_FILE = Path("workspace/publications_summary.md")
+OUTPUT_FILE = Path("workspace/publications_summary.md")  # used when run standalone
 
 SYSTEM_PROMPT = (
     "You are helping build a resume. The user will give you a publication URL or DOI. "
@@ -35,16 +35,23 @@ def _parse_structured(raw: str) -> tuple[str, str]:
     return title, summary
 
 
-def run() -> bool:
-    """Run the publication enricher. Returns True if a summary file was written."""
-    if not INPUT_FILE.exists() or not INPUT_FILE.read_text().strip():
+def run(urls: list = None, output_file: Path = None) -> bool:
+    """Run the publication enricher. Returns True if a summary file was written.
+
+    Args:
+        urls: List of publication URLs/DOIs. Falls back to INPUT_FILE if not given.
+        output_file: Where to write the summary. Defaults to OUTPUT_FILE.
+    """
+    if urls is None:
+        if not INPUT_FILE.exists() or not INPUT_FILE.read_text().strip():
+            return False
+        urls = [l.strip() for l in INPUT_FILE.read_text().splitlines() if l.strip()]
+
+    entries = [u.strip() for u in urls if u.strip()]
+    if not entries:
         return False
 
-    entries = [
-        line.strip()
-        for line in INPUT_FILE.read_text().splitlines()
-        if line.strip()
-    ]
+    out = output_file or OUTPUT_FILE
     print(f"[publications] enriching {len(entries)} publication(s)")
 
     bullets = []
@@ -63,9 +70,9 @@ def run() -> bool:
                 f"- **{entry}**: Could not retrieve - please add manually"
             )
 
-    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    out.parent.mkdir(parents=True, exist_ok=True)
     generated_at = datetime.now(timezone.utc).isoformat()
-    OUTPUT_FILE.write_text(
+    out.write_text(
         f"---\n"
         f"source: publications\n"
         f"count: {len(entries)}\n"
@@ -74,7 +81,7 @@ def run() -> bool:
         f"## Publications\n\n"
         f"{chr(10).join(bullets)}\n"
     )
-    print(f"[publications] wrote {OUTPUT_FILE}")
+    print(f"[publications] wrote {out}")
     return True
 
 

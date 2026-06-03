@@ -1,6 +1,7 @@
+import json
 import os
-import time
 import re
+import time
 from dotenv import load_dotenv
 
 from mimo_client import call_mimo
@@ -34,15 +35,20 @@ class OrchestratorAgent:
         self.system_prompt = """
         You are an elite career strategy analyst.
         Your task is to analyze the candidate's raw "profile.md" and extract their most valuable technical strengths.
-        
+
         You must output a strategy brief named "brief.md" containing:
         1. Core Positioning: The primary persona the candidate should project (e.g., "High-Concurrency Backend Expert").
         2. Key Highlights: Specific experiences (GitHub repos, publications, skills) from the profile that carry the highest value and MUST be emphasized.
         3. Refinement Strategy: How to package and improve any weak or thin descriptions in their experience.
+
+        If a target job description is provided, tailor ALL of the above to maximize the candidate's fit for that specific role.
+        Identify which of the candidate's strengths map directly to the job's required and bonus skills, and make those the strategic focus.
         """
 
-    def run(self, profile_content: str) -> str:
+    def run(self, profile_content: str, job_context: str = None) -> str:
         user_prompt = f"--- Raw Profile ---\n{profile_content}"
+        if job_context:
+            user_prompt += f"\n\n--- Target Job ---\n{job_context}"
         return self.client.generate(self.system_prompt, user_prompt, temperature=0.3)
 
 
@@ -77,46 +83,81 @@ class ResumeWriterAgent:
 class ReviewAgent:
     def __init__(self, client: LLMClient):
         self.client = client
-        self.system_prompt = """
+        self._base_system_prompt = """
         You are an extremely strict senior technical interviewer and recruiter.
         Your task is to review the resume draft and score it (out of 100) based on four criteria:
-        
+
         [Scoring Criteria]
         1. Strategy Alignment (30 pts): Does it perfectly project the core positioning defined in the strategy brief?
         2. Technical Depth (30 pts): Are there specific algorithms, tools, or architectural details mentioned? (Reject vague descriptions like "participated in development").
         3. Quantitative Metrics (20 pts): Does it include specific metrics like performance improvements, GitHub stars, or user counts?
         4. Authenticity & Conciseness (20 pts): Are the sentences professional and concise? Is there any fabricated information?
-        
+        """
+        self._job_scoring_addon = """
+        5. Job Fit (bonus consideration): How well does the resume highlight the skills and experiences that directly match the target job's requirements and bonus conditions?
+           Deduct points from any of the above criteria if key job-required skills are buried or absent.
+        """
+        self._output_format = """
         [MANDATORY OUTPUT FORMAT]
         You MUST strictly follow this exact structure without omitting the tags. Do not add any other text.
-        
+
         ===FEEDBACK===
         (List your harsh critiques here. Be specific about what deductions were made and what needs to be changed.)
-        
+
         ===SCORE===
         (Output ONLY a single integer from 0 to 100, e.g., 85)
         """
 
-    def run(self, brief_content: str, resume_content: str) -> str:
+    def run(self, brief_content: str, resume_content: str, job_context: str = None) -> str:
+        system_prompt = self._base_system_prompt
+        if job_context:
+            system_prompt += self._job_scoring_addon
+        system_prompt += self._output_format
+
         user_prompt = f"--- Strategy Brief ---\n{brief_content}\n\n--- Resume Draft ---\n{resume_content}"
-        return self.client.generate(self.system_prompt, user_prompt, temperature=0.2)
+        if job_context:
+            user_prompt += f"\n\n--- Target Job Description ---\n{job_context}"
+
+        return self.client.generate(system_prompt, user_prompt, temperature=0.2)
 
 # ==========================================
-# 3. Core Pipeline Controller
+# 3. Helpers
+# ==========================================
+
+def _format_job_context(job: dict) -> str:
+    """Convert a job dict into a readable string for LLM prompts."""
+    lines = [
+        f"Job Title: {job.get('job_title', '')}",
+        f"Company: {job.get('company_name', '')}",
+        f"Location: {job.get('location', '')}",
+        f"Experience Required: {job.get('experience', '')}",
+        f"Education Required: {job.get('education', '')}",
+        f"Salary: {job.get('salary', '')}",
+        "",
+        "Job Description:",
+        job.get("description", ""),
+    ]
+    return "\n".join(lines)
+
+
+# ==========================================
+# 4. Core Pipeline Controller
 # ==========================================
 class ResumePipeline:
-    def __init__(self, 
-                 input_filepath: str = "./output/enriched_profile.md", 
+    def __init__(self,
+                 input_filepath: str = "./output/enriched_profile.md",
                  output_filepath: str = "./output/resume_final.md",
-                 workspace_dir: str = "./workspace"):
-        
+                 workspace_dir: str = "./workspace",
+                 job: dict = None):
+
         self.input_filepath = input_filepath
         self.output_filepath = output_filepath
         self.workspace_dir = workspace_dir
-        
+        self.job_context = _format_job_context(job) if job else None
+
         os.makedirs(self.workspace_dir, exist_ok=True)
         os.makedirs(os.path.dirname(self.output_filepath), exist_ok=True)
-        
+
         self.client = LLMClient()
         self.orchestrator = OrchestratorAgent(self.client)
         self.writer = ResumeWriterAgent(self.client)
@@ -141,8 +182,11 @@ class ResumePipeline:
             print(f"[ERROR] Initialization failed: {e}")
             return
         
+        if self.job_context:
+            print(f"\n[JOB TARGET] Tailoring resume for: {self.job_context.splitlines()[0]}")
+
         print("\n[ORCHESTRATOR] Analyzing profile and generating Strategy Brief...")
-        brief_content = self.orchestrator.run(profile_content)
+        brief_content = self.orchestrator.run(profile_content, self.job_context)
         self._write_file("brief.md", brief_content)
         print("[SUCCESS] brief.md generated.")
         
@@ -158,7 +202,7 @@ class ResumePipeline:
             self._write_file(f"resume_v{i}.md", current_resume)
             
             print(f" └─ [REVIEWER] Evaluating draft based on strict criteria...")
-            raw_feedback = self.reviewer.run(brief_content, current_resume)
+            raw_feedback = self.reviewer.run(brief_content, current_resume, self.job_context)
             
             score = 0
             feedback_content = raw_feedback
@@ -193,22 +237,36 @@ class ResumePipeline:
         print(f"[SUCCESS] Final resume saved to: {self.output_filepath}")
 
 # ==========================================
-# 4. Entry Point
+# 5. Entry Point
 # ==========================================
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Resume Optimizer (Part 2)")
+    parser.add_argument("--max-iter", type=int, default=3, help="Max reviewer iterations")
+    parser.add_argument("--pass-score", type=int, default=85, help="Score threshold to stop early")
+    parser.add_argument("--job-file", type=str, default=None, help="Path to a JSON file with target job details")
+    args = parser.parse_args()
+
     INPUT_FILE = "./input/enriched_profile.md"
     OUTPUT_FILE = "./output/resume_final.md"
     WORKSPACE = "./workspace"
-    
+
+    job = None
+    if args.job_file:
+        with open(args.job_file, "r", encoding="utf-8") as f:
+            job = json.load(f)
+
     print(f"[INFO] Preparing to start Part 2. Ensure `{INPUT_FILE}` exists.")
-    
+
     try:
         pipeline = ResumePipeline(
-            input_filepath=INPUT_FILE, 
+            input_filepath=INPUT_FILE,
             output_filepath=OUTPUT_FILE,
-            workspace_dir=WORKSPACE
+            workspace_dir=WORKSPACE,
+            job=job,
         )
-        pipeline.execute(max_iterations=3, pass_score=85)
+        pipeline.execute(max_iterations=args.max_iter, pass_score=args.pass_score)
     except KeyboardInterrupt:
         print("\n[WARNING] Process interrupted by user.")
     except Exception as e:

@@ -1,5 +1,5 @@
 ---
-generated_at: 2026-06-02T11:50:07.296152+00:00
+generated_at: 2026-06-03T12:50:02.316689+00:00
 sources: [profile, github, publications]
 ---
 
@@ -28,13 +28,13 @@ Python, Go, PostgreSQL, Kubernetes, AWS, distributed systems, REST APIs
 
 ## GitHub projects
 
-- **uwsgi-nginx-flask-docker** — Developed a Docker image combining uWSGI and Nginx to serve production Flask applications in Python, which gained over 3,000 stars before being deprecated.
-- **uvicorn-gunicorn-fastapi-docker** — Created a Docker image that utilizes Uvicorn managed by Gunicorn for high-performance FastAPI deployments, featuring auto-tuning and earning nearly 3,000 stars.
-- **pydantic-sqlalchemy** — Authored tools to automatically convert SQLAlchemy models into Pydantic models, bridging two major Python libraries for type-safe data transfer, and attracting over 1,400 stars.
-- **nginx-rtmp-docker** — Built a Docker image with Nginx and the nginx-rtmp-module for live multimedia streaming, providing a ready-to-use solution for video streaming with over 1,300 stars.
-- **dockerswarm.rocks** — Developed a comprehensive resource hub with recipes and tools for Docker Swarm mode, enabling rapid deployment of production-ready, distributed clusters and earning over 1,100 stars.
+- **uwsgi-nginx-flask-docker** — Developed and maintained a popular Docker image (3,006 stars) that packaged a production-ready environment for Flask applications using Python, uWSGI, and Nginx, simplifying deployment.
+- **uvicorn-gunicorn-fastapi-docker** — Created a widely-used Docker image (2,910 stars) for deploying high-performance FastAPI applications, utilizing Python with Uvicorn and Gunicorn for automated process management and tuning.
+- **pydantic-sqlalchemy** — Authored an open-source library (1,402 stars) providing tools to seamlessly convert SQLAlchemy database models into Pydantic data validation models in Python.
+- **nginx-rtmp-docker** — Built a specialized Docker image (1,338 stars) integrating Nginx with the RTMP module to enable live multimedia video streaming from a single container.
+- **dockerswarm.rocks** — Contributed to a comprehensive, deprecated resource site (1,148 stars) that provided recipes, tools, and guidance for rapidly deploying production-grade Docker Swarm mode clusters.
 
 ## Publications
 
-- **Attention Is All You Need** — I developed the Transformer, a novel neural network architecture that relies solely on self-attention mechanisms to process sequential data, effectively addressing the problem of capturing long-range dependencies in tasks like machine translation. This work, presented at the Neural Information Processing Systems Conference in 2017, has become foundational to modern natural language processing, underpinning models such as BERT and GPT, and has achieved significant impact with widespread adoption and numerous citations.
-- **Perception-Aware Policy Optimization for Multimodal Reasoning** — I developed a general optimization algorithm called PAPO (Perception-Aware Policy Optimization) to improve the reasoning capabilities of multimodal models. This work addresses the challenge of aligning model training with perceptual accuracy, demonstrating that techniques like NoisyRollout can yield performance improvements. The research was conducted in 2026 and represents a novel approach to policy optimization for complex reasoning tasks.
+- **Attention Is All You Need** — I introduced the Transformer architecture, a novel neural network model based entirely on attention mechanisms that eliminates the need for recurrence or convolution. This architecture addressed the limitations of sequential processing in RNNs and LSTMs, enabling superior performance on machine translation tasks. The Transformer has since become the foundational model for nearly all state-of-the-art natural language processing systems, such as BERT and GPT.
+- **Perception-Aware Policy Optimization for Multimodal Reasoning** — I developed Perception-Aware Policy Optimization (PAPO), a novel policy gradient algorithm that enhances multimodal reasoning by directly addressing the critical bottleneck of visual perception errors in reinforcement learning. PAPO integrates an Implicit Perception Loss into mainstream RLVR frameworks without requiring additional data or reward models, yielding significant improvements of 4.4%-17.5% on diverse benchmarks and a 30.5% reduction in perception errors. This work establishes a new RL paradigm for visually grounded reasoning, submitted to arXiv in July 2025 with major revisions in April 2026.
