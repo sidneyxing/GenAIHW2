@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Career Dashboard for job recommendation, resume optimization, and interview simulation." />
+  <title>AI Career Navigator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="background-orbs" aria-hidden="true">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="orb orb-c"></span>
+    <span class="grid-glow"></span>
+  </div>
+
+  <main class="shell">
+    <header class="hero glass-panel">
+      <nav class="topbar">
+        <div class="brand">
+          <!-- <span class="brand-mark">AI</span> -->
+          <div>
+            <strong>AI Career Navigator</strong>
+            <small>Job Recommendation · Resume Optimizer · Interview Agent</small>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <button class="ghost-btn" id="resetBtn" type="button">Reset Demo</button>
+          <button class="primary-btn small" id="exportBtn" type="button">Export Session</button>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Multi-agent career workflow</span>
+          <h1>Turn a user profile into ranked jobs, a refined resume, and interview feedback.</h1>
+          <p>
+            A polished multi-step dashboard, it uses the provided backend output files as demo data and is prepared for API integration when the backend exposes endpoints.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-btn" data-next-step="1" type="button">Start Profile Input</button>
+            <button class="ghost-btn" data-next-step="2" type="button">View Job Ranking</button>
+          </div>
+        </div>
+        <aside class="flow-card">
+          <div class="flow-node hot">Experience + Needs</div>
+          <div class="flow-line"></div>
+          <div class="flow-node">20 Ranked Jobs</div>
+          <div class="flow-line"></div>
+          <div class="flow-node hot">Selected Job + Resume</div>
+          <div class="flow-line"></div>
+          <div class="flow-node">Interview Score & Suggestions</div>
+        </aside>
+      </section>
+    </header>
+
+    <section class="stepper glass-panel" aria-label="Progress">
+      <div id="stepperItems" class="stepper-items"></div>
+      <div class="progress-track"><span id="progressFill"></span></div>
+    </section>
+
+    <section id="app" class="app-panel"></section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- <script src="data/demoData.js"></script> -->
+  <!-- delete line 73, when using API -->
+  <script src="data/demoData.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
