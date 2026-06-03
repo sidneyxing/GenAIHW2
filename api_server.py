@@ -29,7 +29,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parent
-load_dotenv(ROOT / ".env")
+
+env_paths = [
+    ROOT / ".env",
+    ROOT / "resume" / ".env",
+    ROOT / "resume" / "profile_reviwer" / ".env",
+    ROOT / "resume" / "profile_reviewer" / ".env",
+]
+
+print("ROOT =", ROOT)
+
+for env_path in env_paths:
+    print("CHECK ENV:", env_path, "EXISTS:", env_path.exists())
+    if env_path.exists():
+        load_dotenv(env_path, override=True)
+        print("LOADED ENV:", env_path)
+
+print("MIMO_API_KEY =", "FOUND" if os.getenv("MIMO_API_KEY") else "NOT FOUND")
 
 # Make local folders importable even when modules use non-package imports.
 for p in [

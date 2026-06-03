@@ -4,7 +4,7 @@
 export const CONFIG = {
   // false = use demoData.js / window.DEMO_DATA
   // true  = call api_server.py endpoints
-  USE_API: false,
+  USE_API: true,
   API_BASE_URL: 'http://localhost:8000'
 };
 
