@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "error": null,
+  "data": {
+    "job_title": "Python Backend Engineer",
+    "job_field": "Software Engineering - Backend Development",
+    "candidate_level": "Advanced",
+    "interview_focus": [
+      "Python Backend Development",
+      "System Design and Scalability"
+    ],
+    "questions": [
+      {
+        "type": "technical",
+        "difficulty": "advanced",
+        "question": "How would you design a scalable REST API using FastAPI for handling real-time analytics, considering aspects like rate limiting, database optimization, and integration with cloud services such as AWS or GCP?"
+      },
+      {
+        "type": "project_experience",
+        "difficulty": "intermediate",
+        "question": "Can you describe the process you led in migrating from a monolithic RPC architecture to an event-driven system with Kafka and Kubernetes at Acme Corp? What were the key challenges, and how did you ensure a smooth transition with minimal downtime?"
+      },
+      {
+        "type": "problem_solving",
+        "difficulty": "advanced",
+        "question": "Imagine you need to integrate a third-party payment gateway into our Python backend system, ensuring secure transactions and handling failures gracefully. Walk me through the steps you would take, including error handling, logging, and compliance with security standards."
+      },
+      {
+        "type": "behavioral",
+        "difficulty": "intermediate",
+        "question": "The job description emphasizes teamwork and communication in a collaborative environment. Can you share an example where you had to work with cross-functional teams, such as designers or product managers, to resolve a technical conflict or deliver a project successfully?"
+      },
+      {
+        "type": "follow_up",
+        "difficulty": "advanced",
+        "question": "Given your experience in open-source tools like Docker and Python frameworks, how would you approach containerizing a Flask application for deployment on AWS with high availability, considering aspects like CI/CD pipelines and monitoring?"
+      }
+    ]
+  }
+}

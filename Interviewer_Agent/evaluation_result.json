@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "error": null,
+  "data": {
+    "score": 2.0,
+    "feedback": "The answer is irrelevant to the interview question. It focuses on data preprocessing with pandas, which does not address designing a scalable REST API using FastAPI, nor does it cover rate limiting, database optimization, or cloud integration. The candidate should redirect to API design and scalability concepts.",
+    "strengths": [
+      "Shows basic Python knowledge, which is relevant to the role, but not applied to the question."
+    ],
+    "weaknesses": [
+      "Does not mention FastAPI or any API design principles.",
+      "Ignores scalability, rate limiting, database optimization, and cloud services entirely.",
+      "Answer is too brief and off-topic, indicating a misunderstanding of the question."
+    ],
+    "better_answer": "To design a scalable REST API using FastAPI for real-time analytics, I would: 1. Utilize FastAPI's asynchronous support and Pydantic models for data validation to handle high concurrency. 2. Implement rate limiting using middleware like FastAPI-Limiter or custom token bucket algorithms to prevent abuse. 3. Optimize the database with techniques such as connection pooling, indexing, and using async database drivers (e.g., SQLAlchemy with asyncpg for PostgreSQL). 4. Integrate with AWS services like Lambda for serverless scaling, S3 for data storage, and ElastiCache for caching frequently accessed analytics data. 5. Deploy using Docker and Kubernetes for horizontal scaling, with monitoring via AWS CloudWatch or similar tools. This ensures low latency, high availability, and cost-efficiency for real-time workloads.",
+    "follow_up_question": "Can you explain specific strategies for implementing rate limiting in FastAPI and how you would optimize database queries for real-time analytics with high read/write throughput?"
+  }
+}
