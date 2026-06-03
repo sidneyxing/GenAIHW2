@@ -1,7 +1,7 @@
 import json
 import re
 
-from llm_api import llm_api
+from resume.profile_reviwer.mimo_client import call_mimo
 
 
 def parse_evaluations(raw_response: str) -> dict:
@@ -172,7 +172,7 @@ Schema：
 {json.dumps(jobs, ensure_ascii=False, indent=2)}
 """
 
-    raw_response = llm_api(
+    raw_response = call_mimo(
         system_prompt=system_prompt,
         user_prompt=user_prompt
     )

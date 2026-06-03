@@ -1,4 +1,4 @@
-from llm_api import llm_api
+from resume.profile_reviwer.mimo_client import call_mimo
 
 
 def generate_job_keywords(
@@ -25,7 +25,7 @@ def generate_job_keywords(
 {user_needs}
 """
 
-    ai_response = llm_api(
+    ai_response = call_mimo(
         system_prompt,
         user_prompt
     )
