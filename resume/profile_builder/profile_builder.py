@@ -10,7 +10,7 @@ from pathlib import Path
 PROFILE_FILE = Path("inputs/profile.md")
 GITHUB_FILE = Path("workspace/github_summary.md")
 PUBLICATIONS_FILE = Path("workspace/publications_summary.md")
-OUTPUT_FILE = Path("output/enriched_profile.md")
+OUTPUT_FILE = Path("output/enriched_profile.md")  # used when run standalone
 
 
 def _strip_frontmatter(text: str) -> str:
@@ -23,32 +23,51 @@ def _strip_frontmatter(text: str) -> str:
     return text
 
 
-def run() -> None:
-    if not PROFILE_FILE.exists():
-        sys.exit("Error: inputs/profile.md is required")
+def run(
+    profile_content: str = None,
+    github_file: Path = None,
+    publications_file: Path = None,
+    output_file: Path = None,
+) -> None:
+    """Merge profile + enrichment files into enriched_profile.md.
+
+    Args:
+        profile_content: Raw profile text. Falls back to PROFILE_FILE if not given.
+        github_file: Path to github_summary.md. Defaults to GITHUB_FILE.
+        publications_file: Path to publications_summary.md. Defaults to PUBLICATIONS_FILE.
+        output_file: Where to write the merged result. Defaults to OUTPUT_FILE.
+    """
+    if profile_content is None:
+        if not PROFILE_FILE.exists():
+            sys.exit("Error: inputs/profile.md is required")
+        profile_content = PROFILE_FILE.read_text()
+
+    gh_file = github_file or GITHUB_FILE
+    pub_file = publications_file or PUBLICATIONS_FILE
+    out = output_file or OUTPUT_FILE
 
     sources = ["profile"]
-    sections = [_strip_frontmatter(PROFILE_FILE.read_text()).strip()]
+    sections = [_strip_frontmatter(profile_content).strip()]
 
-    if GITHUB_FILE.exists():
+    if gh_file.exists():
         sources.append("github")
-        sections.append(_strip_frontmatter(GITHUB_FILE.read_text()).strip())
+        sections.append(_strip_frontmatter(gh_file.read_text()).strip())
 
-    if PUBLICATIONS_FILE.exists():
+    if pub_file.exists():
         sources.append("publications")
-        sections.append(_strip_frontmatter(PUBLICATIONS_FILE.read_text()).strip())
+        sections.append(_strip_frontmatter(pub_file.read_text()).strip())
 
-    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    out.parent.mkdir(parents=True, exist_ok=True)
     generated_at = datetime.now(timezone.utc).isoformat()
     body = "\n\n".join(s for s in sections if s)
-    OUTPUT_FILE.write_text(
+    out.write_text(
         f"---\n"
         f"generated_at: {generated_at}\n"
         f"sources: [{', '.join(sources)}]\n"
         f"---\n\n"
         f"{body}\n"
     )
-    print(f"[merge] wrote {OUTPUT_FILE} (sources: {', '.join(sources)})")
+    print(f"[merge] wrote {out} (sources: {', '.join(sources)})")
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ from mimo_client import call_mimo
 
 GITHUB_API = "https://api.github.com"
 INPUT_FILE = Path("inputs/github_url.txt")
-OUTPUT_FILE = Path("workspace/github_summary.md")
+OUTPUT_FILE = Path("workspace/github_summary.md")  # used when run standalone
 
 SYSTEM_PROMPT = (
     "You are helping build a resume. Summarise each GitHub repo into 1-2 "
@@ -56,12 +56,23 @@ def _fetch_readme_snippet(username: str, repo: str) -> str:
         return ""
 
 
-def run() -> bool:
-    """Run the GitHub enricher. Returns True if a summary file was written."""
-    if not INPUT_FILE.exists() or not INPUT_FILE.read_text().strip():
+def run(github_url: str = None, output_file: Path = None) -> bool:
+    """Run the GitHub enricher. Returns True if a summary file was written.
+
+    Args:
+        github_url: GitHub profile URL. Falls back to INPUT_FILE if not given.
+        output_file: Where to write the summary. Defaults to OUTPUT_FILE.
+    """
+    if github_url is None:
+        if not INPUT_FILE.exists() or not INPUT_FILE.read_text().strip():
+            return False
+        github_url = INPUT_FILE.read_text().strip().splitlines()[0]
+
+    if not github_url.strip():
         return False
 
-    url = INPUT_FILE.read_text().strip().splitlines()[0]
+    out = output_file or OUTPUT_FILE
+    url = github_url.strip()
     username = _extract_username(url)
     print(f"[github] enriching profile for: {username}")
 
@@ -107,9 +118,9 @@ def run() -> bool:
     user_content = "\n---\n".join(blocks)
     summary = call_mimo(SYSTEM_PROMPT, user_content, use_web_search=False)
 
-    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    out.parent.mkdir(parents=True, exist_ok=True)
     generated_at = datetime.now(timezone.utc).isoformat()
-    OUTPUT_FILE.write_text(
+    out.write_text(
         f"---\n"
         f"source: github\n"
         f"username: {username}\n"
@@ -118,7 +129,7 @@ def run() -> bool:
         f"## GitHub projects\n\n"
         f"{summary.strip()}\n"
     )
-    print(f"[github] wrote {OUTPUT_FILE}")
+    print(f"[github] wrote {out}")
     return True
 
 

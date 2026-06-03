@@ -1,5 +1,5 @@
 ---
-generated_at: 2026-05-31T02:37:40.148029+00:00
+generated_at: 2026-06-03T12:50:02.316689+00:00
 sources: [profile, github, publications]
 ---
 
@@ -28,12 +28,13 @@ Python, Go, PostgreSQL, Kubernetes, AWS, distributed systems, REST APIs
 
 ## GitHub projects
 
-- **uwsgi-nginx-flask-docker**: Created a popular, now-deprecated Docker image (3k+ stars) providing a ready-to-use Nginx and uWSGI stack for deploying Flask applications in Python with optimized performance and security.
-- **uvicorn-gunicorn-fastapi-docker**: Developed a widely-used Docker image (2.9k+ stars) for deploying high-performance FastAPI applications using Gunicorn with Uvicorn workers, featuring automatic performance tuning and simplified configuration.
-- **pydantic-sqlalchemy**: Built an open-source library (1.4k+ stars) that bridges SQLAlchemy and Pydantic, enabling automatic model conversion for streamlined data validation and serialization in Python web applications.
-- **nginx-rtmp-docker**: Authored a Docker image (1.3k+ stars) for live video streaming, packaging Nginx with the RTMP module to provide a simple, self-contained solution for multimedia broadcasting.
-- **dockerswarm.rocks**: Created a comprehensive resource site (1.1k+ stars) with guides and tools for implementing production-ready Docker Swarm deployments, helping teams rapidly establish distributed, HTTPS-enabled clusters.
+- **uwsgi-nginx-flask-docker** — Developed and maintained a popular Docker image (3,006 stars) that packaged a production-ready environment for Flask applications using Python, uWSGI, and Nginx, simplifying deployment.
+- **uvicorn-gunicorn-fastapi-docker** — Created a widely-used Docker image (2,910 stars) for deploying high-performance FastAPI applications, utilizing Python with Uvicorn and Gunicorn for automated process management and tuning.
+- **pydantic-sqlalchemy** — Authored an open-source library (1,402 stars) providing tools to seamlessly convert SQLAlchemy database models into Pydantic data validation models in Python.
+- **nginx-rtmp-docker** — Built a specialized Docker image (1,338 stars) integrating Nginx with the RTMP module to enable live multimedia video streaming from a single container.
+- **dockerswarm.rocks** — Contributed to a comprehensive, deprecated resource site (1,148 stars) that provided recipes, tools, and guidance for rapidly deploying production-grade Docker Swarm mode clusters.
 
 ## Publications
 
-- I co-authored "Attention Is All You Need," which introduced the Transformer architecture, a novel neural network model that relies entirely on self-attention mechanisms to process sequential data. This work solved key limitations of recurrent architectures by enabling more parallelized computation and establishing state-of-the-art results on machine translation tasks, fundamentally influencing subsequent NLP research. Presented at NeurIPS in 2017, the paper has become one of the most cited works in the field, catalyzing the development of large-scale language models.
+- **Attention Is All You Need** — I introduced the Transformer architecture, a novel neural network model based entirely on attention mechanisms that eliminates the need for recurrence or convolution. This architecture addressed the limitations of sequential processing in RNNs and LSTMs, enabling superior performance on machine translation tasks. The Transformer has since become the foundational model for nearly all state-of-the-art natural language processing systems, such as BERT and GPT.
+- **Perception-Aware Policy Optimization for Multimodal Reasoning** — I developed Perception-Aware Policy Optimization (PAPO), a novel policy gradient algorithm that enhances multimodal reasoning by directly addressing the critical bottleneck of visual perception errors in reinforcement learning. PAPO integrates an Implicit Perception Loss into mainstream RLVR frameworks without requiring additional data or reward models, yielding significant improvements of 4.4%-17.5% on diverse benchmarks and a 30.5% reduction in perception errors. This work establishes a new RL paradigm for visually grounded reasoning, submitted to arXiv in July 2025 with major revisions in April 2026.
