@@ -344,14 +344,6 @@ if (CONFIG.USE_API && targetStep > 1 && getJobs().length === 0 && targetStep !==
             </ul>
           </div>
           <div class="mini-card">
-            <h3>Session Snapshot</h3>
-            <div class="stat-row">
-              <div class="stat"><strong>${getJobs().length}</strong><span>Jobs loaded</span></div>
-              <div class="stat"><strong>${getQuestions().length}</strong><span>Questions</span></div>
-              <div class="stat"><strong>${getFinalSummary().average_score || '-'}</strong><span>Avg score</span></div>
-            </div>
-          </div>
-          <div class="mini-card">
             <h3>Deployment Mode</h3>
             <p>Current mode: <strong>${CONFIG.USE_API ? 'Realtime API' : 'Demo Data'}</strong>. Demo mode reads embedded backend outputs; API mode calls FastAPI endpoints in realtime.</p>
           </div>
